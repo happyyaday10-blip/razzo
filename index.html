@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letter</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:'Playfair Display',serif;
+}
+
+/* ---------- COMMON SECTIONS ---------- */
+.section{
+    position:absolute;
+    inset:0;
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:cover;
+    opacity:0;
+    transition:opacity 1.4s ease;
+}
+.section.active{opacity:1;z-index:1}
+
+/* ---------- PAGE 2 (UTPREKSHA IMAGE) ---------- */
+.portrait-page{
+    background-image:url('utpreksha.jpg');
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:82%;
+    background-color:#000;
+    animation:zoomOut 10s ease-out forwards;
+}
+
+/* Taller phones */
+@media (min-aspect-ratio:9/16){
+    .portrait-page{background-size:85%}
+}
+
+/* Desktop */
+@media (min-width:900px){
+    .portrait-page{background-size:65%}
+}
+
+/* Subtle cinematic zoom out */
+@keyframes zoomOut{
+    from{background-size:88%}
+    to{background-size:82%}
+}
+
+/* ---------- BUTTON ---------- */
+.center{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:100%;
+}
+.button{
+    padding:16px 42px;
+    border-radius:40px;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+    background:rgba(255,248,240,.9);
+    color:#3b2f2f;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+    transition:transform .3s ease;
+}
+.button:hover{transform:translateY(-2px)}
+
+/* ---------- OVERLAY ---------- */
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(40,30,20,.55);
+}
+
+/* ---------- ENVELOPE ---------- */
+.envelope-wrapper{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:5;
+}
+.envelope{
+    width:280px;
+    height:180px;
+    position:relative;
+    cursor:pointer;
+    perspective:1000px;
+}
+.envelope-body{
+    position:absolute;
+    inset:0;
+    background:#e8d9c5;
+    border-radius:6px;
+    box-shadow:0 15px 40px rgba(0,0,0,.4);
+}
+.envelope-flap{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:50%;
+    background:#decbb1;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top;
+    transition:transform 1s ease;
+    z-index:3;
+}
+
+/* Wax seal */
+.wax{
+    position:absolute;
+    bottom:38px;
+    left:50%;
+    transform:translateX(-50%);
+    width:46px;
+    height:46px;
+    background:radial-gradient(circle,#b11226,#7d0c18);
+    border-radius:50%;
+    box-shadow:
+        inset 0 2px 6px rgba(255,255,255,.4),
+        inset 0 -4px 8px rgba(0,0,0,.4),
+        0 6px 15px rgba(0,0,0,.5);
+    transition:opacity .5s ease;
+    z-index:4;
+}
+.letter-card{
+    position:absolute;
+    width:90%;
+    height:90%;
+    top:5%;
+    left:5%;
+    background:#fff8eb;
+    border-radius:4px;
+    transition:transform 1.2s ease;
+    z-index:2;
+}
+
+.envelope.open .envelope-flap{transform:rotateX(180deg)}
+.envelope.open .letter-card{transform:translateY(-120%)}
+.envelope.open .wax{opacity:0}
+
+/* ---------- LETTER ---------- */
+.letter-wrapper{
+    position:relative;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity 1.2s ease;
+}
+.letter-wrapper.show{opacity:1}
+
+.letter{
+    width:90%;
+    max-width:900px;
+    background:rgba(255,248,235,.95);
+    padding:45px;
+    border-radius:18px;
+    box-shadow:0 25px 60px rgba(0,0,0,.5);
+    color:#3b2f2f;
+    line-height:1.8;
+    position:relative;
+}
+
+.us-photo{
+    position:absolute;
+    top:-28px;
+    right:-28px;
+    width:140px;
+    height:140px;
+    object-fit:cover;
+    border-radius:16px;
+    border:3px solid #fff;
+}
+
+.heading{
+    font-family:'Dancing Script',cursive;
+    font-size:36px;
+    margin-bottom:20px;
+}
+
+.text{
+    font-size:17px;
+    white-space:pre-line;
+}
+
+/* Typewriter caret */
+.caret::after{
+    content:"|";
+    animation:blink 1s infinite;
+}
+@keyframes blink{
+    0%,50%,100%{opacity:1}
+    25%,75%{opacity:0}
+}
+
+/* Signature */
+.signature{
+    margin-top:30px;
+    font-family:'Dancing Script',cursive;
+    font-size:28px;
+    opacity:0;
+    transform:translateY(10px);
+    transition:all 1s ease;
+}
+.signature.show{
+    opacity:1;
+    transform:translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="section active" style="background-image:url('urvi2.jpg')"></div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="section portrait-page">
+    <div class="center">
+        <button class="button" onclick="openLetter()">Tap to view letter</button>
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="section" style="background-image:url('letter.jpg')">
+    <div class="overlay"></div>
+
+    <div class="envelope-wrapper" id="envelopeWrap">
+        <div class="envelope" id="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body"></div>
+            <div class="wax"></div>
+            <div class="letter-card"></div>
+        </div>
+    </div>
+
+    <div class="letter-wrapper" id="letterWrap">
+        <div class="letter">
+            <img src="us.jpg" class="us-photo">
+            <div class="heading">Hey utpreksha!!</div>
+            <div id="para1" class="text caret"></div>
+            <br>
+            <div id="para2" class="text"></div>
+            <div id="sign" class="signature">— Always yours 🤍</div>
+        </div>
+    </div>
+</div>
+
+<audio id="paperSound" src="paper.mp3"></audio>
+
+<script>
+/* PAGE TRANSITION TIMING */
+setTimeout(()=>{
+    page1.classList.remove('active');
+    page2.classList.add('active');
+},1000);
+
+function openLetter(){
+    page2.classList.remove('active');
+    page3.classList.add('active');
+}
+
+envelope.onclick=()=>{
+    envelope.classList.add('open');
+    paperSound.play();
+    setTimeout(()=>{
+        envelopeWrap.style.display='none';
+        letterWrap.classList.add('show');
+        startTyping();
+    },1500);
+};
+
+/* TYPEWRITER */
+const p1=`You are the one who is very close to me and the best person i ever had 🫶
+
+The only person who is with me after all the chutiyapa i did
+Thats the reason i love u so much
+
+No one could ever take the place that you have in my heart 💓`;
+
+const p2=`Whenever u feel low just remember ,
+I will always be there for you, no matter the time or the situation.
+In your happiest moments or your hardest days, you can count on me to stand by your side without hesitation.
+You’ll never face anything alone, because my support, care, and loyalty to you are constant.
+Anytime you need someone to listen, to help, or simply to stay, I’ll be there for you—always.`;
+
+let i=0,j=0;
+function startTyping(){
+    if(i<p1.length){
+        para1.textContent+=p1[i++];
+        setTimeout(startTyping,35);
+    }else{
+        para1.classList.remove('caret');
+        setTimeout(typeSecond,600);
+    }
+}
+function typeSecond(){
+    if(j<p2.length){
+        para2.textContent+=p2[j++];
+        setTimeout(typeSecond,30);
+    }else{
+        sign.classList.add('show');
+    }
+}
+</script>
+
+</body>
+</html>
